@@ -56,12 +56,24 @@ namespace AutomatedTests
         [Test]
         public void Test2()
         {
-            driver.FindElement(By.XPath("(//*[@class='dy--PopularCategoryMain__link'])[1]")).Click();
-            driver.FindElement(By.XPath("(//*[@class='CatalogCategoryCard__link'])[1]")).Click();
-            var firstItem = driver.FindElement(By.CssSelector(".ProductCardVerticalLayout .IconFont_cart_add"));
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView()", firstItem);
-            Actions actions = new Actions(driver);
-            actions.MoveToElement(firstItem).Build().Perform();
+            var firstButtonAddToCart = driver.FindElement(By.XPath("//*[contains(@class,' ProductCardVerticalCart__button-add ')]/.."));
+            new Actions(driver).MoveToElement(firstButtonAddToCart.FindElement(By.CssSelector(".IconFont_cart_add"))).Build().Perform();
+            Assert.IsTrue(firstButtonAddToCart.FindElements(By.XPath(".//*[contains(@class,'Hint__block_active')]")).Any(),
+                "Tooltip on 'Add item to card' has not appeared");
+            Assert.AreEqual(firstButtonAddToCart.FindElement(By.XPath(".//*[contains(@class,'Hint__block_active')]")).Text.Trim(), "Добавить в корзину",
+                "Incorrect tooltip text");
+        }
+
+        [Test]
+        public void Test3()
+        {
+            driver.FindElement(By.XPath("//*[contains(@class,'IconAndTextWithCount__text_mainHeader') and normalize-space()='Войти']")).Click();
+            driver.FindElement(By.CssSelector(".js--AuthGroup__tab-sign-up")).Click();
+            driver.FindElement(By.CssSelector(".js--SignUp__input-name__container-input")).SendKeys("Test");
+            driver.FindElement(By.CssSelector(".js--SignUp__input-email__container-input")).SendKeys("shjfgshjds534.yhft@mail.ru");
+            driver.FindElement(By.CssSelector(".js--SignUp__button-confirm-phone")).Click();
+            Assert.IsTrue(!driver.FindElements(By.XPath("//button[contains(@class,'js--SignUp__button-confirm-phone') and not(@disabled)]")).Any(),
+                "Button 'Подтвердить номер телефона' is enabled when phone number input is empty");
         }
 
             [TearDown]
