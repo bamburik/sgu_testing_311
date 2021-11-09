@@ -9,7 +9,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace AutomatedTests
 {
-    public class Tests
+    public class CitilinkTests
     {
         WebDriver driver;
 
@@ -26,7 +26,7 @@ namespace AutomatedTests
         }
 
         [Test]
-        public void Test1()
+        public void TestPriceFilter()
         {
             new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(x => driver.FindElement(By.CssSelector(".dy--PopularCategoryMain__link")).Displayed);
             //((IJavaScriptExecutor)driver).ExecuteScript("document.getElementsByClassName('dy--PopularCategoryMain__link')[0].scrollIntoView()");
@@ -54,7 +54,7 @@ namespace AutomatedTests
         }
 
         [Test]
-        public void Test2()
+        public void TestAddToCartButtonTooltipText()
         {
             var firstButtonAddToCart = driver.FindElement(By.XPath("//*[contains(@class,' ProductCardVerticalCart__button-add ')]/.."));
             new Actions(driver).MoveToElement(firstButtonAddToCart.FindElement(By.CssSelector(".IconFont_cart_add"))).Build().Perform();
@@ -65,7 +65,7 @@ namespace AutomatedTests
         }
 
         [Test]
-        public void Test3()
+        public void NegativeTestPhoneNumberConfirmationWithEmptyPhoneNumber()
         {
             driver.FindElement(By.XPath("//*[contains(@class,'IconAndTextWithCount__text_mainHeader') and normalize-space()='Войти']")).Click();
             driver.FindElement(By.CssSelector(".js--AuthGroup__tab-sign-up")).Click();
